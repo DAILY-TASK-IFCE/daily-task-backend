@@ -13,7 +13,10 @@ class FormItem(db.Model):
     __tablename__ = 'form_items'
     id = db.Column(db.Integer, primary_key=True)
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
-    field = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), nullable=False)
+    user_form_items = db.relationship('UserFormItem', backref='form_item', lazy=True) 
 
-
+class UserFormItem(db.Model):
+    __tablename__ = 'user_form_items'
+    id = db.Column(db.Integer, primary_key=True)
+    form_item_id = db.Column(db.Integer, db.ForeignKey('form_item.id'), nullable=False)
