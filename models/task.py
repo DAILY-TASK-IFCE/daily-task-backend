@@ -13,7 +13,7 @@ class Task(db.Model):
     task_groups = db.relationship('TaskGroup', backref='task', lazy=True)
 
 class Status(db.Model):
-    __tablename__ = 'status'
+    __tablename__ = 'statuses'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     tasks = db.relationship('Task', backref='status', lazy=True)
