@@ -1,4 +1,4 @@
-from app import db
+from config import db
 
 class Group(db.Model):
     __tablename__ = 'groups'  # Nome da tabela no banco de dados

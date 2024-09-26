@@ -1,23 +1,53 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_smorest import Api
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from authlib.integrations.flask_client import OAuth
+from utils.functions.register_blueprints import register_blueprints
+from config import db
 
 load_dotenv()
 
 app = Flask(__name__)
 
-app.config['API_TITLE'] = 'Daily Task RESTAPI'
-app.config['API_VERSION'] = 'v1'
-app.config['OPENAPI_VERSION'] = '3.0.2'
-app.config['OPENAPI_URL_PREFIX'] = '/docs'
-app.config['OPENAPI_SWAGGER_UI_PATH'] = '/swagger-ui'
-app.config['OPENAPI_SWAGGER_UI_URL'] = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/'
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config["API_TITLE"] = "DAILYTASK REST API"
+app.config["API_VERSION"] = "v1"
+app.config["OPENAPI_VERSION"] = "3.0.3"
+app.config["OPENAPI_URL_PREFIX"] = "/docs"
+app.config["OPENAPI_SWAGGER_UI_PATH"] = "/"
+app.config[
+    "OPENAPI_SWAGGER_UI_URL"
+] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config["OAUTHLIB_INSECURE_TRANSPORT"] = True
+app.config["OAUTHLIB_RELAX_TOKEN_SCOPE"] = True
+app.config['API_SPEC_OPTIONS'] = {
+    'security':[{"bearerAuth": []}],
+    'components':{
+        "securitySchemes":
+            {
+                    "bearerAuth": {
+                        "type":"http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
+                }
+            }
+    }
+}
+db.init_app(app)
+CORS(
+    app,
+    origins=[str(os.getenv("FRONTEND_URL"))],
+)
+migrate = Migrate(app, db)
+api = Api(app)
+register_blueprints(api)
 
 oauth = OAuth(app)
 
@@ -32,9 +62,6 @@ google = oauth.register(
     userinfo_endpoint='https://www.googleapis.com/oauth2/v1/userinfo',
     client_kwargs={'scope': 'openid profile email'},
 )
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 from models import *  
 
