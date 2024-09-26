@@ -26,6 +26,6 @@ class GenerateCookie(MethodView):
         jwt_token = generate_jwt(session_user)
         return make_response(jsonify(
             {
-                'Authorization': f'Bearer {jwt_token}'
+                'Authorization': f'{jwt_token}'
             }
         ), 200)
