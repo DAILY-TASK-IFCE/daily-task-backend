@@ -9,8 +9,8 @@ class Task(db.Model):
     priority_id = db.Column(db.Integer, db.ForeignKey('priorities.id'), nullable=False)
     difficulty_id = db.Column(db.Integer, db.ForeignKey('difficulties.id'), nullable=False)
     task_type_id = db.Column(db.Integer, db.ForeignKey('task_types.id'), nullable=False)
-    users = db.relationship('UserTask', backref='task', lazy=True)
-    task_groups = db.relationship('TaskGroup', backref='task', lazy=True)
+    user_teams = db.relationship('UserTask', backref='task', lazy=True)
+    groups = db.relationship('TaskGroup', backref='task', lazy=True)
 
 class Status(db.Model):
     __tablename__ = 'statuses'
@@ -41,4 +41,9 @@ class TaskGroup(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
-
+class UserTask(db.Model):
+    __tablename__ = 'user_tasks'
+    id = db.Column(db.Integer, primary_key=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
+    user_team_id = db.Column(db.Integer, db.ForeignKey('user_teams.id'), nullable=False)
+    

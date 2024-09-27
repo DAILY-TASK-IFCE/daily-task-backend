@@ -7,8 +7,6 @@ class User(db.Model):
     photo = db.Column(db.String(255), nullable=True)
     name = db.Column(db.String(100), nullable=False)
     teams = db.relationship('UserTeam', backref='user', lazy=True)
-    groups = db.relationship('UserGroup', backref='user', lazy=True)
-    tasks = db.relationship('UserTask', backref='user', lazy=True)
 
 class UserTeam(db.Model):
     __tablename__ = 'user_teams'
@@ -16,6 +14,8 @@ class UserTeam(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'), nullable=False)
+    tasks = db.relationship('UserTask', backref='user_teams', lazy=True)
+    groups = db.relationship('UserGroup', backref='user_teams', lazy=True)
 
 class Type(db.Model):
     __tablename__ = 'types' 

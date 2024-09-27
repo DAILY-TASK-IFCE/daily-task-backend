@@ -11,6 +11,6 @@ class Group(db.Model):
 class UserGroup(db.Model):
     __tablename__ = 'user_groups'  # Nome da tabela no banco de dados
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_team_id = db.Column(db.Integer, db.ForeignKey('user_teams.id'), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
 
