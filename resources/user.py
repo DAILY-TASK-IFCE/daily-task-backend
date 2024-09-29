@@ -34,10 +34,20 @@ class UserList(ResourceModel):
             return {"message": f"Erro com a ação de inserir um Usuário. Código: {error}"}, 500
 
         return {"message": "Usuário criado com sucesso"}, 201
-    @blp.arguments(UserPatchParamsSchema, location="query")
+ 
+@blp.route("/user/<int:id>")
+class UserId(ResourceModel):
+    @blp.response(200, UserResponseSchema)
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if user is None:
+            return {"message": "Usuário não encontrado"}, 400
+        return user, 200
+
+    @blp.arguments(UserQueryParamsSchema, location="query")
     @blp.response(200)
-    def patch(self, args):
-        user = User.query.filter_by(id=args["id"]).first()
+    def patch(self, args, id):
+        user = User.query.filter_by(id=id).first()
         if user is None:
             return {"message":"Usuário não encontrado"}, 400
         
@@ -50,16 +60,7 @@ class UserList(ResourceModel):
             return {"message": f"Erro com a ação de atualizar um Usuário. Código: {error}"}, 500
         
         return {"message": "Usuário editado com sucesso"}, 200
- 
-@blp.route("/user/<int:id>")
-class UserId(ResourceModel):
-    @blp.response(200, UserResponseSchema)
-    def get(self, id):
-        user = User.query.filter_by(id=id).first()
-        if user is None:
-            return {"message": "Usuário não encontrado"}, 400
-        return user, 200
-    
+
     def delete(self, id):
         user = User.query.filter_by(id=id).first()
         if user is None:

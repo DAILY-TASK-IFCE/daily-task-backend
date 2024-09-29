@@ -25,5 +25,3 @@ class UserQueryParamsSchema(Schema):
     photo = fields.Str()
     name = fields.Str()
 
-class UserPatchParamsSchema(UserQueryParamsSchema):
-    id = fields.Int(required=True)

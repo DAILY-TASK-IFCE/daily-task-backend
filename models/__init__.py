@@ -1,4 +1,5 @@
 from .item import Item
+from .invite import Invite
 from .task import Task
 from .team import Team
 from .type import Type
