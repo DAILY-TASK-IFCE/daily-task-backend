@@ -1,7 +1,7 @@
 import jwt
 from flask_smorest import Blueprint
 from flask.views import MethodView
-from schemas import ArgumentGenerateCookieSchema, ResponseGenerateCookieSchema
+from schemas.cookies import ArgumentGenerateCookieSchema, ResponseGenerateCookieSchema
 from flask import jsonify, make_response, Response
 from config import secret_key
 

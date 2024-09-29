@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validate
 from utils.validations.messages.schemas import INVALID_EMAIL, INVALID_SIZE, REQUIRED_FIELD
-
+from schemas.team import PlainTeamResponseSchema
 class PlainUserResponseSchema(Schema):
     id = fields.Int()
     email = fields.Str()
@@ -8,7 +8,7 @@ class PlainUserResponseSchema(Schema):
     name = fields.Str()
 
 class UserResponseSchema(PlainUserResponseSchema):
-    teams = fields.List(fields.Nested('PlainTeamResponseSchema'))
+    teams = fields.List(fields.Nested(PlainTeamResponseSchema))
 
 class UserParamsSchema(Schema):
     email = fields.Str(required=True, validate=validate.And(

@@ -1,6 +1,6 @@
 from flask import Blueprint, make_response, jsonify, session, request, redirect, g
 from config import db
-from models import User
+from models.user import User
 from utils.decorators.is_logged_in import is_logged_in
 from utils.decorators.is_not_logged_in import is_not_logged_in
 

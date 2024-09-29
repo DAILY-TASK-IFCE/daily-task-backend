@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from resources.resource import ResourceModel
 from schemas.user import UserQueryParamsSchema, UserResponseSchema, UserParamsSchema, UserPatchParamsSchema
-from models import User
+from models.user import User
 blp = Blueprint("Users", __name__, description="Operations on Users")
 
 @blp.route("/user")
