@@ -15,6 +15,7 @@ class UserTeamResponseSchema(Schema):
     type_id = fields.Int()
     tasks = fields.List(fields.Nested('TaskResponseSchema'))
     groups = fields.List(fields.Nested('GroupResponseSchema'))
+    user_form_items = fields.List(fields.Nested('UserFormItemResponseSchema'))
 
 class TypeResponseSchema(Schema):
     id = fields.Int()

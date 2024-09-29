@@ -16,6 +16,7 @@ class UserTeam(db.Model):
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'), nullable=False)
     tasks = db.relationship('UserTask', backref='user_teams', lazy=True)
     groups = db.relationship('UserGroup', backref='user_teams', lazy=True)
+    user_form_items = db.relationship('UserFormItem', backref='user_teams', lazy=True)
 
 class Type(db.Model):
     __tablename__ = 'types' 
