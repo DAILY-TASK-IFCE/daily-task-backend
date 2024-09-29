@@ -1,7 +1,7 @@
 from flask_smorest import Blueprint
 from sqlalchemy.exc import SQLAlchemyError
 from resources.resource import ResourceModel
-from schemas.user import UserQueryParamsSchema, UserResponseSchema, UserParamsSchema, UserPatchParamsSchema
+from schemas.user import UserQueryParamsSchema, UserResponseSchema, UserParamsSchema
 from models.user import User
 blp = Blueprint("Users", __name__, description="Operations on Users")
 
