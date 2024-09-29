@@ -1,6 +1,4 @@
-from flask import jsonify
 from flask_smorest import Blueprint
-from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from resources.resource import ResourceModel
 from schemas.user import UserQueryParamsSchema, UserResponseSchema, UserParamsSchema, UserPatchParamsSchema
@@ -46,8 +44,10 @@ class UserList(ResourceModel):
         for key, value in args.items():
             if value is not None:
                 setattr(user, key, value)
-
-        self.save_data(user)
+        try:
+            self.save_data(user)
+        except SQLAlchemyError as error:
+            return {"message": f"Erro com a ação de atualizar um Usuário. Código: {error}"}, 500
         
         return {"message": "Usuário editado com sucesso"}, 200
  
@@ -59,4 +59,15 @@ class UserId(ResourceModel):
         if user is None:
             return {"message": "Usuário não encontrado"}, 400
         return user, 200
-  
+    
+    def delete(self, id):
+        user = User.query.filter_by(id=id).first()
+        if user is None:
+            return {"message": "Usuário não encontrado"}, 400
+        try:
+            self.delete_data(user)
+        except SQLAlchemyError as error:
+            return {"message": f"Error com a ação de deletar um usuário. Código: {error}"}, 500
+        
+        return {"message": "Usuário deletado com sucesso"}, 200
+
