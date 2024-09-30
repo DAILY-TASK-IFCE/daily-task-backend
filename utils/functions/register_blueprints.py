@@ -3,6 +3,7 @@ from auth.generate_cookie import blp as TestCookieBluePrint
 from resources.user import blp as UserBluePrint
 from resources.team import blp as TeamBluePrint
 from resources.invite import blp as InviteBluePrint
+from resources.user_team import blp as UserTeamBluePrint
 from werkzeug.exceptions import UnprocessableEntity
 
 @UserBluePrint.errorhandler(UnprocessableEntity)
@@ -26,3 +27,4 @@ def register_blueprints(api):
     api.register_blueprint(UserBluePrint)
     api.register_blueprint(TeamBluePrint)
     api.register_blueprint(InviteBluePrint)
+    api.register_blueprint(UserTeamBluePrint)

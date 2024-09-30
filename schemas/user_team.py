@@ -1,7 +1,8 @@
 from marshmallow import Schema, fields, validate
 from utils.validations.messages.schemas import INVALID_ID
-
-
+from schemas.task import PlainTaskResponseSchema
+from schemas.group import PlainGroupResponseSchema
+from schemas.user_form_item import UserFormItemResponseSchema
 class PlainUserTeamResponseSchema(Schema):
     id = fields.Int()
     type_id = fields.Int()
@@ -9,9 +10,9 @@ class PlainUserTeamResponseSchema(Schema):
 class UserTeamResponseSchema(PlainUserTeamResponseSchema):
     user = fields.Nested('PlainUserResponseSchema')
     team = fields.Nested('PlainTeamResponseSchema')
-    tasks = fields.List(fields.Nested('PlainTaskResponseSchema'))
-    groups = fields.List(fields.Nested('PlainGroupResponseSchema'))
-    user_form_items = fields.List(fields.Nested('UserFormItemResponseSchema'))
+    tasks = fields.List(fields.Nested(PlainTaskResponseSchema))
+    groups = fields.List(fields.Nested(PlainGroupResponseSchema))
+    user_form_items = fields.List(fields.Nested(UserFormItemResponseSchema))
 
 
 class UserTeamParamsSchema(Schema):
