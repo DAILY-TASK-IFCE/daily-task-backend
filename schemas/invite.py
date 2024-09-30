@@ -1,6 +1,5 @@
 from marshmallow import Schema, fields, validate
-from utils.validations.messages.schemas import INVALID_EMAIL, INVALID_ID, INVALID_SIZE, REQUIRED_FIELD
-
+from utils.validations.messages.schemas import INVALID_ID
 
 class InviteResponseSchema(Schema):
     id = fields.Int()
