@@ -7,6 +7,7 @@ from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
 from utils.functions.nest_team_in_users import nest_team_in_users
+
 blp = Blueprint("Users", __name__, description="Operations on Users")
 
 @blp.route("/user")

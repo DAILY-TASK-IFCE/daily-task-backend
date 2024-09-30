@@ -1,6 +1,6 @@
 from flask import Blueprint, make_response, jsonify, session, request, redirect, g
 from config import db
-from models.user import User
+from models import User
 from utils.decorators.is_logged_in import is_logged_in
 from utils.decorators.is_not_logged_in import is_not_logged_in
 
@@ -15,6 +15,7 @@ import jwt
 from flask_smorest import Blueprint
 from sqlalchemy.exc import SQLAlchemyError
 from config import GOOGLE_CLIENT_ID, BACKEND_URL, FRONTEND_URL, secret_key
+from utils.functions.get_logged_in_user import get_logged_in_user
 
 load_dotenv()
 
@@ -91,5 +92,9 @@ def info():
     user_data = jwt.decode(
         str(request.headers.get("Authorization")).split(" ")[1], algorithms=["HS256"], key=str(secret_key)
     )
+    user = User.query.filter_by(email=user_data["email"]).first()
+    if not user:
+        return jsonify({"message": "Usuário não encontrado."})
+    user_data["id"] = user.id
     return jsonify(user_data), 200
 
