@@ -24,26 +24,26 @@ class TeamList(ResourceModel):
         query = filter_query(Team, args)
         teams = query.all()
         return teams
-
-    @is_logged_in # NÃO COMENTE ESSE is_logged_in (Esse post usa o usuário autenticado).
+@blp.route("/team/<int:user_id>")
+class TeamUserId(ResourceModel):
+    @is_logged_in
     @handle_exceptions
     @blp.arguments(TeamParamsSchema)
     @blp.response(201)
-    def post(self, new_team_data):
-        current_user = get_logged_in_user()
+    def post(self, new_team_data, user_id):
         new_team = Team(**new_team_data)
         self.save_data(new_team)
-        user_team = UserTeam(user_id=current_user.id, team_id=new_team.id, type_id=os.getenv("TEAM_CREATOR_ID"))
+        user_team = UserTeam(user_id=user_id, team_id=new_team.id, type_id=os.getenv("TEAM_CREATOR_ID"))
         self.save_data(user_team)
         return {"message": "Time criado com sucesso."}, 201
 
 @blp.route("/team/<int:id>")
-class TeamId(ResourceModel):    
+class TeamId(ResourceModel):     
     @is_logged_in
     @blp.response(200, TeamResponseSchema)
     def get(self, id):
         team = Team.query.get_or_404(id)
-        return team, 200
+        return team, 200       
     
     @is_logged_in
     @handle_exceptions
