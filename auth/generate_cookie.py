@@ -1,7 +1,6 @@
 from flask import jsonify, make_response
 from flask_smorest import Blueprint
 from models import User 
-from flask_jwt_extended import create_access_token
 from sqlalchemy.exc import IntegrityError
 from schemas.cookies import ArgumentGenerateCookieSchema, ResponseGenerateCookieSchema
 from resources.resource import ResourceModel
