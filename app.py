@@ -7,11 +7,13 @@ import os
 from authlib.integrations.flask_client import OAuth
 from utils.functions.register_blueprints import register_blueprints
 from config import db
-
+from flask_jwt_extended import JWTManager
 load_dotenv()
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = os.getenv("SECRET_KEY")
 
+jwt = JWTManager(app)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config["API_TITLE"] = "DAILYTASK REST API"
 app.config["API_VERSION"] = "v1"

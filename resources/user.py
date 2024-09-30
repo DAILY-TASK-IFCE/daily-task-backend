@@ -15,8 +15,7 @@ class UserList(ResourceModel):
     @blp.arguments(UserQueryParamsSchema, location="query")
     @blp.response(200, UserResponseSchema(many=True))
     def get(self, args):
-        query = User.query
-        query = filter_query(query, User, args)
+        query = filter_query(User, args)
         users = query.all()
         return users
     
