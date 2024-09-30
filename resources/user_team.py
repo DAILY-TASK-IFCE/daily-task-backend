@@ -1,7 +1,7 @@
 from flask_smorest import Blueprint
 
 from resources.resource import ResourceModel
-from schemas.user_team import UserTeamQueryParamsSchema, UserTeamResponseSchema, UserTeamParamsSchema
+from schemas.user_team import UserTeamQueryParamsSchema, UserTeamResponseSchema
 from models.user_team import UserTeam
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
