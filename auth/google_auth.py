@@ -30,7 +30,7 @@ flow = Flow.from_client_secrets_file(
         "https://www.googleapis.com/auth/userinfo.email",
         "openid",
     ],
-    redirect_uri=str(BACKEND_URL) + "/user/auth/callback",
+    redirect_uri=str(BACKEND_URL) + "/auth/callback",
 )
 
 def generate_jwt(payload):

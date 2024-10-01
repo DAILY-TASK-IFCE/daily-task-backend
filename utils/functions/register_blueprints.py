@@ -1,5 +1,4 @@
 from auth.google_auth import blp as GoogleAuthBlueprint
-from auth.generate_cookie import blp as TestCookieBluePrint
 from resources.user import blp as UserBluePrint
 from resources.team import blp as TeamBluePrint
 from resources.invite import blp as InviteBluePrint
@@ -24,7 +23,6 @@ def handle_unprocessable_entity_error(error):
 
 def register_blueprints(api):
     api.register_blueprint(GoogleAuthBlueprint)
-    api.register_blueprint(TestCookieBluePrint)
     api.register_blueprint(UserBluePrint)
     api.register_blueprint(TeamBluePrint)
     api.register_blueprint(InviteBluePrint)

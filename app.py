@@ -24,7 +24,7 @@ app.config[
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.config["OAUTHLIB_INSECURE_TRANSPORT"] = True
 app.config["OAUTHLIB_RELAX_TOKEN_SCOPE"] = True
 app.config['API_SPEC_OPTIONS'] = {
