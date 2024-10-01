@@ -8,4 +8,5 @@ class Team(db.Model):
     invites = db.relationship('Invite', backref='team', lazy=True)
     form_items = db.relationship('FormItem', backref='team', lazy=True)
     groups = db.relationship('Group', backref='team', lazy=True)
+    daily_limit_time = db.relationship('DailyLimitTime', backref='team', lazy=True)
 

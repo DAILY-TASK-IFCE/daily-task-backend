@@ -5,3 +5,4 @@ class DailyLimitTime(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     time_limit = db.Column(db.Time, nullable=False)
+    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
