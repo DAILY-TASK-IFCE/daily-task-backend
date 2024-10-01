@@ -4,6 +4,11 @@ from resources.team import blp as TeamBluePrint
 from resources.invite import blp as InviteBluePrint
 from resources.user_team import blp as UserTeamBluePrint
 from resources.group import blp as GroupBluePrint
+from resources.type import blp as TypeBluePrint
+from resources.status import blp as StatusBluePrint
+from resources.priority import blp as PriorityBluePrint
+from resources.difficulty import blp as DifficultyBluePrint
+from resources.task_type import blp as TaskTypeBluePrint
 from werkzeug.exceptions import UnprocessableEntity
 
 @UserBluePrint.errorhandler(UnprocessableEntity)
@@ -28,3 +33,8 @@ def register_blueprints(api):
     api.register_blueprint(InviteBluePrint)
     api.register_blueprint(UserTeamBluePrint)
     api.register_blueprint(GroupBluePrint)
+    api.register_blueprint(TypeBluePrint)
+    api.register_blueprint(StatusBluePrint)
+    api.register_blueprint(PriorityBluePrint)
+    api.register_blueprint(DifficultyBluePrint)
+    api.register_blueprint(TaskTypeBluePrint)

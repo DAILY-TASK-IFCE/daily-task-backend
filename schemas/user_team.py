@@ -6,8 +6,12 @@ from schemas.user_form_item import UserFormItemResponseSchema
 class PlainUserTeamResponseSchema(Schema):
     id = fields.Int()
     type_id = fields.Int()
+    user_id = fields.Int()
+    team_id = fields.Int()
 
-class UserTeamResponseSchema(PlainUserTeamResponseSchema):
+class UserTeamResponseSchema(Schema):
+    id = fields.Int()
+    type_id = fields.Int()
     user = fields.Nested('PlainUserResponseSchema')
     team = fields.Nested('PlainTeamResponseSchema')
     tasks = fields.List(fields.Nested(PlainTaskResponseSchema))
