@@ -7,6 +7,7 @@ from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
 from utils.functions.nest_team_in_users import nest_team_in_users
+from utils.functions.nest_team_in_users import nest_team_in_user
 
 blp = Blueprint("Users", __name__, description="Operations on Users")
 
@@ -38,7 +39,7 @@ class UserId(ResourceModel):
     @blp.response(200, UserResponseSchema)
     def get(self, id):
         user = User.query.get_or_404(id)
-        return user, 200
+        return nest_team_in_user(user), 200
     
     @is_logged_in
     @handle_exceptions

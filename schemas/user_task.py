@@ -3,7 +3,7 @@ from utils.validations.messages.schemas import INVALID_ID, INVALID_SIZE, REQUIRE
 
 class UserTaskResponseSchema(Schema):
     id = fields.Int()
-    user = fields.Nested('UserTeamResponseSchema')
+    user_team_id = fields.Int()
     task_id = fields.Int()
 
 class UserTaskParamsSchema(Schema):

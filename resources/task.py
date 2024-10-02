@@ -6,7 +6,8 @@ from models.task import Task
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
-
+from utils.functions.nest_user_team_in_tasks import nest_user_team_in_tasks
+from utils.functions.nest_user_team_in_tasks import nest_user_team_in_task
 blp = Blueprint("Tasks", __name__, description="Operations on tasks")
 
 @blp.route("/task")
@@ -17,7 +18,7 @@ class TaskList(ResourceModel):
     def get(self, args):
         query = filter_query(Task, args)
         tasks = query.all()
-        return tasks
+        return nest_user_team_in_tasks(tasks) 
     
     @is_logged_in
     @handle_exceptions
@@ -34,7 +35,7 @@ class TaskId(ResourceModel):
     @blp.response(200, TaskResponseSchema)
     def get(self, id):
         task = Task.query.get_or_404(id)
-        return task, 200
+        return nest_user_team_in_task(task), 200
     
     @is_logged_in
     @handle_exceptions
