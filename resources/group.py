@@ -6,6 +6,7 @@ from models.group import Group
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
+from utils.functions.nest_task import nest_task
 
 blp = Blueprint("Groups", __name__, description="Operations on Groups")
 
@@ -17,7 +18,12 @@ class UserList(ResourceModel):
     def get(self, args):
         query = filter_query(Group, args)
         groups = query.all()
-        return groups
+        group_dicts = []
+        for group in groups:
+            group_dict = group.__dict__.copy()
+            group_dict["tasks"] = nest_task(group)
+            group_dicts.append(group_dict)
+        return group_dicts
     
     @is_logged_in
     @handle_exceptions
@@ -37,7 +43,9 @@ class UserId(ResourceModel):
     @blp.response(200, GroupResponseSchema)
     def get(self, id):
         group = Group.query.get_or_404(id)
-        return group, 200
+        group_dict = group.__dict__.copy()
+        group_dict["tasks"] = nest_task(group)
+        return group_dict, 200
     
     @is_logged_in
     @handle_exceptions

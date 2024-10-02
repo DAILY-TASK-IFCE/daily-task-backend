@@ -11,6 +11,7 @@ from resources.difficulty import blp as DifficultyBluePrint
 from resources.task_type import blp as TaskTypeBluePrint
 from resources.task import blp as TaskBluePrint
 from resources.user_task import blp as UserTaskBluePrint
+from resources.user_group import blp as UserGroupBluePrint
 from werkzeug.exceptions import UnprocessableEntity
 
 @UserBluePrint.errorhandler(UnprocessableEntity)
@@ -42,3 +43,4 @@ def register_blueprints(api):
     api.register_blueprint(TaskTypeBluePrint)
     api.register_blueprint(TaskBluePrint)
     api.register_blueprint(UserTaskBluePrint)
+    api.register_blueprint(UserGroupBluePrint)

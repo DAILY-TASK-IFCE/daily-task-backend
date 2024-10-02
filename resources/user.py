@@ -6,8 +6,7 @@ from models.user import User
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
-from utils.functions.nest_team_in_users import nest_team_in_users
-from utils.functions.nest_team_in_users import nest_team_in_user
+from utils.functions.nest_team import nest_team
 
 blp = Blueprint("Users", __name__, description="Operations on Users")
 
@@ -19,7 +18,12 @@ class UserList(ResourceModel):
     def get(self, args):
         query = filter_query(User, args)
         users = query.all()
-        return nest_team_in_users(users)
+        user_dicts = []
+        for user in users:
+            user_dict = user.__dict__.copy()
+            user_dict["teams"] = nest_team(user)
+            user_dicts.append(user_dict)
+        return user_dicts
     
     @is_logged_in
     @handle_exceptions
@@ -39,7 +43,9 @@ class UserId(ResourceModel):
     @blp.response(200, UserResponseSchema)
     def get(self, id):
         user = User.query.get_or_404(id)
-        return nest_team_in_user(user), 200
+        user_dict = user.__dict__.copy()
+        user_dict["teams"] = nest_team(user)
+        return user_dict, 200
     
     @is_logged_in
     @handle_exceptions
