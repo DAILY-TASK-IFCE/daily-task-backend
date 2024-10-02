@@ -1,20 +1,25 @@
+from flask_smorest import Blueprint
 from auth.google_auth import blp as GoogleAuthBlueprint
-from resources.user import blp as UserBluePrint
-from resources.team import blp as TeamBluePrint
-from resources.invite import blp as InviteBluePrint
-from resources.user_team import blp as UserTeamBluePrint
-from resources.group import blp as GroupBluePrint
-from resources.type import blp as TypeBluePrint
-from resources.status import blp as StatusBluePrint
-from resources.priority import blp as PriorityBluePrint
-from resources.difficulty import blp as DifficultyBluePrint
-from resources.task_type import blp as TaskTypeBluePrint
-from resources.task import blp as TaskBluePrint
-from resources.user_task import blp as UserTaskBluePrint
-from resources.user_group import blp as UserGroupBluePrint
+from resources.user import blp as UserBlueprint
+from resources.team import blp as TeamBlueprint
+from resources.invite import blp as InviteBlueprint
+from resources.user_team import blp as UserTeamBlueprint
+from resources.group import blp as GroupBlueprint
+from resources.type import blp as TypeBlueprint
+from resources.status import blp as StatusBlueprint
+from resources.priority import blp as PriorityBlueprint
+from resources.difficulty import blp as DifficultyBlueprint
+from resources.task_type import blp as TaskTypeBlueprint
+from resources.task import blp as TaskBlueprint
+from resources.user_task import blp as UserTaskBlueprint
+from resources.user_group import blp as UserGroupBlueprint
+from resources.task_group import blp as TaskGroupBlueprint
+from resources.form_item import blp as FormItemBlueprint
+from resources.item import blp as ItemBlueprint
 from werkzeug.exceptions import UnprocessableEntity
 
-@UserBluePrint.errorhandler(UnprocessableEntity)
+
+@UserBlueprint.errorhandler(UnprocessableEntity)
 def handle_unprocessable_entity_error(error):
     errors = {}
 
@@ -30,17 +35,11 @@ def handle_unprocessable_entity_error(error):
     return {"messages": messages}, 422
 
 def register_blueprints(api):
-    api.register_blueprint(GoogleAuthBlueprint)
-    api.register_blueprint(UserBluePrint)
-    api.register_blueprint(TeamBluePrint)
-    api.register_blueprint(InviteBluePrint)
-    api.register_blueprint(UserTeamBluePrint)
-    api.register_blueprint(GroupBluePrint)
-    api.register_blueprint(TypeBluePrint)
-    api.register_blueprint(StatusBluePrint)
-    api.register_blueprint(PriorityBluePrint)
-    api.register_blueprint(DifficultyBluePrint)
-    api.register_blueprint(TaskTypeBluePrint)
-    api.register_blueprint(TaskBluePrint)
-    api.register_blueprint(UserTaskBluePrint)
-    api.register_blueprint(UserGroupBluePrint)
+    blueprints = [
+        GoogleAuthBlueprint, UserBlueprint, TeamBlueprint, InviteBlueprint, UserTeamBlueprint, GroupBlueprint,
+        TypeBlueprint, StatusBlueprint, PriorityBlueprint, DifficultyBlueprint, TaskTypeBlueprint, TaskBlueprint,
+        UserTaskBlueprint, UserGroupBlueprint, TaskGroupBlueprint, FormItemBlueprint, ItemBlueprint
+    ]
+
+    for blueprint in blueprints:
+        api.register_blueprint(blueprint)
