@@ -20,7 +20,7 @@ class InviteList(ResourceModel):
     @blp.response(200, InviteResponseSchema(many=True))
     def get(self, args):
         query = filter_query(Invite, args)
-        invites = query.group_by(Invite.id.desc()).all()
+        invites = query.order_by(Invite.id.desc()).all()
         return invites
     
     @is_logged_in
