@@ -1,4 +1,3 @@
-from flask_smorest import Blueprint
 from auth.google_auth import blp as GoogleAuthBlueprint
 from resources.user import blp as UserBlueprint
 from resources.team import blp as TeamBlueprint
@@ -16,10 +15,13 @@ from resources.user_group import blp as UserGroupBlueprint
 from resources.task_group import blp as TaskGroupBlueprint
 from resources.form_item import blp as FormItemBlueprint
 from resources.item import blp as ItemBlueprint
+from resources.user_form_item import blp as UserFormItemBlueprint
+from resources.daily_limit_time import blp as DailyLimitTimeBlueprint
 from werkzeug.exceptions import UnprocessableEntity
 
 
 @UserBlueprint.errorhandler(UnprocessableEntity)
+@DailyLimitTimeBlueprint.errorhandler(UnprocessableEntity)
 def handle_unprocessable_entity_error(error):
     errors = {}
 
@@ -38,7 +40,8 @@ def register_blueprints(api):
     blueprints = [
         GoogleAuthBlueprint, UserBlueprint, TeamBlueprint, InviteBlueprint, UserTeamBlueprint, GroupBlueprint,
         TypeBlueprint, StatusBlueprint, PriorityBlueprint, DifficultyBlueprint, TaskTypeBlueprint, TaskBlueprint,
-        UserTaskBlueprint, UserGroupBlueprint, TaskGroupBlueprint, FormItemBlueprint, ItemBlueprint
+        UserTaskBlueprint, UserGroupBlueprint, TaskGroupBlueprint, FormItemBlueprint, ItemBlueprint, UserFormItemBlueprint,
+        DailyLimitTimeBlueprint
     ]
 
     for blueprint in blueprints:
