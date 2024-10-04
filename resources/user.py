@@ -17,7 +17,7 @@ class UserList(ResourceModel):
     @blp.response(200, UserResponseSchema(many=True))
     def get(self, args):
         query = filter_query(User, args)
-        users = query.all()
+        users = query.group_by(User.id.desc()).all()
         user_dicts = []
         for user in users:
             user_dict = user.__dict__.copy()

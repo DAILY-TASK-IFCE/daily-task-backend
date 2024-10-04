@@ -22,7 +22,7 @@ class TeamList(ResourceModel):
     @blp.response(200, TeamResponseSchema(many=True))
     def get(self, args):
         query = filter_query(Team, args)
-        teams = query.all()
+        teams = query.group_by(Team.id.desc()).all()
         return teams
     
     @is_logged_in
