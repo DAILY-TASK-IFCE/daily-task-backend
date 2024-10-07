@@ -24,9 +24,6 @@ class TaskTypeList(ResourceModel):
     @blp.arguments(TaskFieldsParamsSchema)
     @blp.response(201)
     def post(self, new_task_type_data):
-        if TaskType.query.filter_by(email=new_task_type_data["name"]).first():
-            return {"message": "Já existe um tipo de task com esse nome."}, 409
-
         new_task_type = TaskType(**new_task_type_data)
         self.save_data(new_task_type)
         return {"message": "Tipo de Task criado com sucesso"}, 201
