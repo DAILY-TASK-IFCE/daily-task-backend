@@ -17,11 +17,13 @@ from resources.form_item import blp as FormItemBlueprint
 from resources.item import blp as ItemBlueprint
 from resources.user_form_item import blp as UserFormItemBlueprint
 from resources.daily_limit_time import blp as DailyLimitTimeBlueprint
+from resources.daily import blp as DailyBlueprint
 from werkzeug.exceptions import UnprocessableEntity
 
 
 @UserBlueprint.errorhandler(UnprocessableEntity)
 @DailyLimitTimeBlueprint.errorhandler(UnprocessableEntity)
+@DailyBlueprint.errorhandler(UnprocessableEntity)
 def handle_unprocessable_entity_error(error):
     errors = {}
 
@@ -41,7 +43,7 @@ def register_blueprints(api):
         GoogleAuthBlueprint, UserBlueprint, TeamBlueprint, InviteBlueprint, UserTeamBlueprint, GroupBlueprint,
         TypeBlueprint, StatusBlueprint, PriorityBlueprint, DifficultyBlueprint, TaskTypeBlueprint, TaskBlueprint,
         UserTaskBlueprint, UserGroupBlueprint, TaskGroupBlueprint, FormItemBlueprint, ItemBlueprint, UserFormItemBlueprint,
-        DailyLimitTimeBlueprint
+        DailyLimitTimeBlueprint, DailyBlueprint
     ]
 
     for blueprint in blueprints:
