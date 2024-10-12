@@ -5,7 +5,6 @@ from calendar import monthrange
 from resources.resource import ResourceModel
 from schemas.daily import DailyQueryParamsSchema, DailyResponseSchema, DailyParamsSchema
 from models.daily import Daily
-from models.item import Item
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
@@ -25,7 +24,7 @@ class DailyList(ResourceModel):
         for daily in dailys:
             daily_dict = daily.__dict__.copy()
             daily_dict["items"] = nest_item(daily)
-            daily_dict["user_team"] = Item.query.get(daily.user_team_id)
+            daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
             daily_dicts.append(daily_dict)
         return daily_dicts
     
@@ -50,7 +49,7 @@ class DailyId(ResourceModel):
         daily = Daily.query.get_or_404(id)
         daily_dict = daily.__dict__.copy()
         daily_dict["items"] = nest_item(daily)
-        daily_dict["user_team"] = Item.query.get(daily.user_team_id)
+        daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
         return daily_dict, 200
     
     @is_logged_in
@@ -88,7 +87,7 @@ class DailyWeekId(ResourceModel):
         for daily in dailies:
             daily_dict = daily.__dict__.copy()
             daily_dict["items"] = nest_item(daily)
-            daily_dict["user_team"] = Item.query.get(daily.user_team_id)
+            daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
             daily_dicts.append(daily_dict)
         
         return daily_dicts
@@ -115,7 +114,7 @@ class DailyMonthId(ResourceModel):
         for daily in dailies:
             daily_dict = daily.__dict__.copy()
             daily_dict["items"] = nest_item(daily)
-            daily_dict["user_team"] = Item.query.get(daily.user_team_id)
+            daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
             daily_dicts.append(daily_dict)
         
         return daily_dicts
