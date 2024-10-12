@@ -11,7 +11,7 @@ Com o uso das dailies escritas e a gestão de tarefas (tasks), nosso projeto per
 Para instalar o backend do Daily-Task é necessário antes ter no repositório raiz do projeto um .env com as informações necessárias (acesse .env-example para mais detalhes) e na pasta auth é necessário existir o arquivo client_secret.json para realizar a autenticação do Google.
 #### Banco de dados
 É necessário estar utilizando um banco de dados postgres que terá nome, porta, endereço e nome do banco definido no .env
-Como por exemplo DATABASE_URL=postgresql://postgres:postgres@localhost:5432/daily_db
+como por exemplo DATABASE_URL=postgresql://postgres:postgres@localhost:5432/daily_db
 ### Passo a Passo
 #### Clonando repositório
 ```bash
@@ -19,7 +19,7 @@ git clone https://github.com/DAILY-TASK-IFCE/daily-task-backend.git
 cd daily-task-backend
 ```
 #### Instalando ambiente
-Lembre de garantir que os Pré-requisitos estão satisfeitos antes de executar os comandos e que você está no diretório raíz do projeto.
+Lembre de garantir que os [pré-requisitos](README.md#Pré-requisitos) estão satisfeitos antes de executar os comandos e que você está no diretório raíz do projeto.
 ```bash
 python3 -m venv venv
 source venv/bin/activate
