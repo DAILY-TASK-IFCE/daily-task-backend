@@ -17,4 +17,9 @@ class DailyParamsSchema(Schema):
 class DailyQueryParamsSchema(Schema):
     user_team_id = fields.Int()
     date = fields.Date()
+    filter_by = fields.String()
+    order_by = fields.String()
+    weeknum = fields.Int()
+    monthnum = fields.Int()
+    team_id = fields.Int()
 
