@@ -13,13 +13,15 @@ VALID_TYPE_IDS = {TEAM_CREATOR_ID, TEAM_ADMIN_ID, TEAM_REGULAR_ID}
 
 blp = Blueprint("Types", __name__, description="Operations on Types")
 
+
 @blp.route("/type")
-class TypeList(ResourceModel): 
+class TypeList(ResourceModel):
     @is_logged_in
     @blp.response(200, TypeResponseSchema(many=True))
     def get(self):
         types = Type.query.filter(Type.id.in_(VALID_TYPE_IDS)).all()
         return types
+
 
 @blp.route("/type/<int:id>")
 class TypeId(ResourceModel):
@@ -31,4 +33,3 @@ class TypeId(ResourceModel):
 
         type_obj = Type.query.get_or_404(id)
         return type_obj, 200
-

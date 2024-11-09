@@ -8,13 +8,15 @@ VALID_TYPE_IDS = {1, 2, 3}
 
 blp = Blueprint("Difficulty", __name__, description="Operations on Difficulties")
 
+
 @blp.route("/difficulty")
-class DifficultyList(ResourceModel): 
+class DifficultyList(ResourceModel):
     @is_logged_in
     @blp.response(200, TaskFieldsResponseSchema(many=True))
     def get(self):
         difficulty = Difficulty.query.filter(Difficulty.id.in_(VALID_TYPE_IDS)).all()
         return difficulty
+
 
 @blp.route("/difficulty/<int:id>")
 class DifficultyId(ResourceModel):
@@ -26,4 +28,3 @@ class DifficultyId(ResourceModel):
 
         obj = Difficulty.query.get_or_404(id)
         return obj, 200
-

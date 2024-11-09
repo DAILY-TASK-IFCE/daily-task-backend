@@ -29,7 +29,7 @@ def handle_unprocessable_entity_error(error):
 
     messages = []
     if error.data:
-        errors = error.data.get('messages', {}).get('json', {})
+        errors = error.data.get("messages", {}).get("json", {})
         for field, field_errors in errors.items():
             messages.extend(field_errors)
 
@@ -38,12 +38,29 @@ def handle_unprocessable_entity_error(error):
 
     return {"messages": messages}, 422
 
+
 def register_blueprints(api):
     blueprints = [
-        GoogleAuthBlueprint, UserBlueprint, TeamBlueprint, InviteBlueprint, TeamUserBlueprint, GroupBlueprint,
-        TypeBlueprint, StatusBlueprint, PriorityBlueprint, DifficultyBlueprint, TaskTypeBlueprint, TaskBlueprint,
-        UserTaskBlueprint, UserGroupBlueprint, TaskGroupBlueprint, FormItemBlueprint, ItemBlueprint, UserFormItemBlueprint,
-        DailyLimitTimeBlueprint, DailyBlueprint
+        GoogleAuthBlueprint,
+        UserBlueprint,
+        TeamBlueprint,
+        InviteBlueprint,
+        TeamUserBlueprint,
+        GroupBlueprint,
+        TypeBlueprint,
+        StatusBlueprint,
+        PriorityBlueprint,
+        DifficultyBlueprint,
+        TaskTypeBlueprint,
+        TaskBlueprint,
+        UserTaskBlueprint,
+        UserGroupBlueprint,
+        TaskGroupBlueprint,
+        FormItemBlueprint,
+        ItemBlueprint,
+        UserFormItemBlueprint,
+        DailyLimitTimeBlueprint,
+        DailyBlueprint,
     ]
 
     for blueprint in blueprints:

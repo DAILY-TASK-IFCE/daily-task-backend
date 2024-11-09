@@ -9,13 +9,15 @@ VALID_TYPE_IDS = {1, 2, 3, 4}
 
 blp = Blueprint("Status", __name__, description="Operations on Statuses")
 
+
 @blp.route("/status")
-class StatusList(ResourceModel): 
+class StatusList(ResourceModel):
     @is_logged_in
     @blp.response(200, TaskFieldsResponseSchema(many=True))
     def get(self):
         status = Status.query.filter(Status.id.in_(VALID_TYPE_IDS)).all()
         return status
+
 
 @blp.route("/status/<int:id>")
 class StatusId(ResourceModel):
@@ -27,4 +29,3 @@ class StatusId(ResourceModel):
 
         obj = Status.query.get_or_404(id)
         return obj, 200
-

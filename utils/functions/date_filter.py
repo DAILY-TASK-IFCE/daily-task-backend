@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 from calendar import monthrange
 from models.daily import Daily
+
+
 def calculate_week_range(weeknum):
     today = datetime.today()
     start_of_current_week = today - timedelta(days=today.weekday())
@@ -8,11 +10,12 @@ def calculate_week_range(weeknum):
     end_of_week = start_of_week + timedelta(days=6)
     return start_of_week, end_of_week
 
+
 def calculate_month_days(monthnum):
     today = datetime.today()
     target_month = today.month - monthnum
     target_year = today.year
-    
+
     if target_month <= 0:
         target_month += 12
         target_year -= 1
@@ -24,8 +27,9 @@ def calculate_month_days(monthnum):
         current_date = datetime(target_year, target_month, day)
         if current_date.weekday() < 5:
             month_days.append(current_date)
-    
+
     return month_days
+
 
 def apply_date_filter(query, filter_by, args):
     if filter_by == "week":

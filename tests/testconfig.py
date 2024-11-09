@@ -2,6 +2,7 @@ import pytest
 
 from testapp import create_app, db
 
+
 @pytest.fixture(scope="module")
 def app():
     app = create_app("sqlite://")

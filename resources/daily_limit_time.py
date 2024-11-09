@@ -1,27 +1,41 @@
 from flask_smorest import Blueprint
 
 from resources.resource import ResourceModel
-from schemas.daily_limit_time import DailyLimitTimeQueryParamsSchema, DailyLimitTimeResponseSchema, DailyLimitTimeParamsSchema
+from schemas.daily_limit_time import (
+    DailyLimitTimeQueryParamsSchema,
+    DailyLimitTimeResponseSchema,
+    DailyLimitTimeParamsSchema,
+)
 from models.daily_limit_time import DailyLimitTime
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.update_if_present import update_if_present
 
-blp = Blueprint("DailyLimitTimes", __name__, description="Operations on DailyLimitTimes")
+blp = Blueprint(
+    "DailyLimitTimes", __name__, description="Operations on DailyLimitTimes"
+)
+
 
 @blp.route("/daily_limit_time")
-class DailyLimitTimeList(ResourceModel): 
-    
+class DailyLimitTimeList(ResourceModel):
+
     @is_logged_in
     @handle_exceptions
     @blp.arguments(DailyLimitTimeParamsSchema)
     @blp.response(201)
     def post(self, new_daily_limit_time_data):
-        if (DailyLimitTime.query.filter_by(team_id=new_daily_limit_time_data["team_id"]).first()):
-            return {"message": "Já existe um Tempo Limite de Daily's nesse time, tente editar o que ja existe."}, 409
+        if DailyLimitTime.query.filter_by(
+            team_id=new_daily_limit_time_data["team_id"]
+        ).first():
+            return {
+                "message": "Já existe um Tempo Limite de Daily's nesse time, tente editar o que ja existe."
+            }, 409
         new_daily_limit_time = DailyLimitTime(**new_daily_limit_time_data)
         self.save_data(new_daily_limit_time)
-        return {"message": "Item de formulário adicionado com sucesso a um usuário."}, 201
+        return {
+            "message": "Item de formulário adicionado com sucesso a um usuário."
+        }, 201
+
 
 @blp.route("/daily_limit_time/<int:team_id>")
 class DailyLimitTimeId(ResourceModel):
@@ -32,7 +46,7 @@ class DailyLimitTimeId(ResourceModel):
         if not daily_limit_time:
             return {"code": 404, "status": "Not Found"}, 404
         return daily_limit_time, 200
- 
+
     @is_logged_in
     @handle_exceptions
     @blp.arguments(DailyLimitTimeQueryParamsSchema, location="query")
@@ -43,12 +57,13 @@ class DailyLimitTimeId(ResourceModel):
             return {"code": 404, "status": "Not Found"}, 404
         update_if_present(daily_limit_time, args)
         self.save_data(daily_limit_time)
-        return {"message": "Tempo limite de daily do time editado com sucesso"}, 200   
+        return {"message": "Tempo limite de daily do time editado com sucesso"}, 200
+
     @is_logged_in
     @handle_exceptions
     def delete(self, id):
         daily_limit_time = DailyLimitTime.query.get_or_404(id)
         self.delete_data(daily_limit_time)
-        return {"message": "Tempo limite de daily do time removido com sucesso de um usuário."}, 200
-
-
+        return {
+            "message": "Tempo limite de daily do time removido com sucesso de um usuário."
+        }, 200

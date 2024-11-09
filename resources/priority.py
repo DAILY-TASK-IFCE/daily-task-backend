@@ -9,13 +9,15 @@ VALID_TYPE_IDS = {1, 2, 3, 4}
 
 blp = Blueprint("Priority", __name__, description="Operations on Priorities")
 
+
 @blp.route("/priority")
-class PriorityList(ResourceModel): 
+class PriorityList(ResourceModel):
     @is_logged_in
     @blp.response(200, TaskFieldsResponseSchema(many=True))
     def get(self):
         priority = Priority.query.filter(Priority.id.in_(VALID_TYPE_IDS)).all()
         return priority
+
 
 @blp.route("/priority/<int:id>")
 class PriorityId(ResourceModel):
@@ -27,4 +29,3 @@ class PriorityId(ResourceModel):
 
         obj = Priority.query.get_or_404(id)
         return obj, 200
-

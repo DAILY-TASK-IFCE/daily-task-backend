@@ -11,9 +11,17 @@ class ItemResponseSchema(Schema):
 
 
 class ItemParamsSchema(Schema):
-    description = fields.Str(required=True, validate=validate.Length(min=1, error=INVALID_ITEM_DESCRIPTION))
-    task_id = fields.Int(allow_none=True, validate=validate.Range(min=1, error=INVALID_ID.format("'Task'")))
-    daily_id = fields.Int(required=True, validate=validate.Range(min=1, error=INVALID_ID.format("'Daily'")))
+    description = fields.Str(
+        required=True, validate=validate.Length(min=1, error=INVALID_ITEM_DESCRIPTION)
+    )
+    task_id = fields.Int(
+        allow_none=True,
+        validate=validate.Range(min=1, error=INVALID_ID.format("'Task'")),
+    )
+    daily_id = fields.Int(
+        required=True,
+        validate=validate.Range(min=1, error=INVALID_ID.format("'Daily'")),
+    )
 
 
 class ItemQueryParamsSchema(Schema):

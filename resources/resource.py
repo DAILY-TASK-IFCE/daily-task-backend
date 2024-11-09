@@ -2,6 +2,7 @@ from flask.views import MethodView
 from sqlalchemy.exc import SQLAlchemyError
 from config import db
 
+
 class ResourceModel(MethodView):
     def save_data(self, obj):
         try:

@@ -7,11 +7,16 @@ from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
 from utils.functions.update_if_present import update_if_present
-from utils.functions.add_nested_params import add_nested_params, add_nested_params_to_list
+from utils.functions.add_nested_params import (
+    add_nested_params,
+    add_nested_params_to_list,
+)
+
 blp = Blueprint("Users", __name__, description="Operations on Users")
 
+
 @blp.route("/user")
-class UserList(ResourceModel): 
+class UserList(ResourceModel):
     @is_logged_in
     @blp.arguments(UserQueryParamsSchema, location="query")
     @blp.response(200, UserResponseSchema(many=True))
@@ -19,7 +24,7 @@ class UserList(ResourceModel):
         query = filter_query(User, args)
         users = query.order_by(User.id.desc()).all()
         return add_nested_params_to_list(users, ["teams"])
-    
+
     @is_logged_in
     @handle_exceptions
     @blp.arguments(UserParamsSchema)
@@ -32,6 +37,7 @@ class UserList(ResourceModel):
         self.save_data(new_user)
         return {"message": "Usuário criado com sucesso"}, 201
 
+
 @blp.route("/user/<int:id>")
 class UserId(ResourceModel):
     @is_logged_in
@@ -40,7 +46,7 @@ class UserId(ResourceModel):
         user = User.query.get_or_404(id)
         user_dict = add_nested_params(user, ["teams"])
         return user_dict, 200
-    
+
     @is_logged_in
     @handle_exceptions
     @blp.arguments(UserQueryParamsSchema, location="query")
@@ -50,11 +56,10 @@ class UserId(ResourceModel):
         update_if_present(user, args)
         self.save_data(user)
         return {"message": "Usuário editado com sucesso"}, 200
-    
+
     @is_logged_in
     @handle_exceptions
     def delete(self, id):
         user = User.query.get_or_404(id)
         self.delete_data(user)
         return {"message": "Usuário deletado com sucesso"}, 200
-

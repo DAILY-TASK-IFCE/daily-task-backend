@@ -10,8 +10,9 @@ from utils.functions.update_if_present import update_if_present
 
 blp = Blueprint("Items", __name__, description="Operations on Items")
 
+
 @blp.route("/item")
-class ItemList(ResourceModel): 
+class ItemList(ResourceModel):
     @is_logged_in
     @blp.arguments(ItemQueryParamsSchema, location="query")
     @blp.response(200, ItemResponseSchema(many=True))
@@ -19,7 +20,7 @@ class ItemList(ResourceModel):
         query = filter_query(Item, args)
         items = query.all()
         return items
-    
+
     @is_logged_in
     @handle_exceptions
     @blp.arguments(ItemParamsSchema)
@@ -29,6 +30,7 @@ class ItemList(ResourceModel):
         self.save_data(new_item)
         return {"message": "Item criado com sucesso"}, 201
 
+
 @blp.route("/item/<int:id>")
 class ItemId(ResourceModel):
     @is_logged_in
@@ -36,7 +38,7 @@ class ItemId(ResourceModel):
     def get(self, id):
         item = Item.query.get_or_404(id)
         return item, 200
-    
+
     @is_logged_in
     @handle_exceptions
     @blp.arguments(ItemQueryParamsSchema, location="query")
@@ -46,11 +48,10 @@ class ItemId(ResourceModel):
         update_if_present(item, args)
         self.save_data(item)
         return {"message": "Item editado com sucesso"}, 200
-    
+
     @is_logged_in
     @handle_exceptions
     def delete(self, id):
         item = Item.query.get_or_404(id)
         self.delete_data(item)
         return {"message": "Item deletado com sucesso"}, 200
-

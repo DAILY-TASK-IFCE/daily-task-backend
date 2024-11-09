@@ -19,7 +19,9 @@ from utils.functions.get_logged_in_user import get_logged_in_user
 
 load_dotenv()
 
-blp = Blueprint("Google Auth", __name__, description="OAuth via Google", url_prefix="/auth")
+blp = Blueprint(
+    "Google Auth", __name__, description="OAuth via Google", url_prefix="/auth"
+)
 
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
@@ -33,6 +35,7 @@ flow = Flow.from_client_secrets_file(
     redirect_uri=str(BACKEND_URL) + "/auth/callback",
 )
 
+
 def generate_jwt(payload):
     encoded_jwt = jwt.encode(payload, key=str(secret_key), algorithm="HS256")
     return encoded_jwt
@@ -44,7 +47,10 @@ def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
 
-    return jsonify({"message": "Login initiated", "authorization_url": authorization_url}), 200
+    return (
+        jsonify({"message": "Login initiated", "authorization_url": authorization_url}),
+        200,
+    )
 
 
 @blp.route("/callback", methods=["GET"])
@@ -75,10 +81,10 @@ def callback():
     session_user = {
         "name": id_info.get("given_name"),
         "email": id_info.get("email"),
-        "photo": id_info.get("picture")
+        "photo": id_info.get("picture"),
     }
     jwt_token = generate_jwt(session_user)
-    del id_info['aud']
+    del id_info["aud"]
     jwt_token = generate_jwt(session_user)
 
     response = make_response(redirect(f"{FRONTEND_URL}?jwt={jwt_token}"))
@@ -90,11 +96,12 @@ def callback():
 @is_logged_in
 def info():
     user_data = jwt.decode(
-        str(request.headers.get("Authorization")).split(" ")[1], algorithms=["HS256"], key=str(secret_key)
+        str(request.headers.get("Authorization")).split(" ")[1],
+        algorithms=["HS256"],
+        key=str(secret_key),
     )
     user = User.query.filter_by(email=user_data["email"]).first()
     if not user:
         return jsonify({"message": "Usuário não encontrado."})
     user_data["id"] = user.id
     return jsonify(user_data), 200
-

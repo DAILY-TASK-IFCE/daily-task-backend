@@ -1,5 +1,6 @@
 from sqlalchemy.orm import class_mapper
 
+
 def filter_query(model, filter_args):
     query = model.query
     model_attributes = {column.name: column for column in class_mapper(model).columns}
