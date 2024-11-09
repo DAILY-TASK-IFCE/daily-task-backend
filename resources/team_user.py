@@ -8,7 +8,7 @@ from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
 from utils.functions.add_nested_params import add_nested_params, add_nested_params_to_list
 from utils.functions.update_if_present import update_if_present
-blp = Blueprint("User Teams", __name__, description="Operations on User Teams")
+blp = Blueprint("Team Users", __name__, description="Operations on Team Users")
 
 @blp.route("/team_user")
 class UserList(ResourceModel): 
