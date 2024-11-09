@@ -5,6 +5,7 @@ from schemas.daily_limit_time import DailyLimitTimeQueryParamsSchema, DailyLimit
 from models.daily_limit_time import DailyLimitTime
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
+from utils.functions.update_if_present import update_if_present
 
 blp = Blueprint("DailyLimitTimes", __name__, description="Operations on DailyLimitTimes")
 
@@ -40,11 +41,7 @@ class DailyLimitTimeId(ResourceModel):
         daily_limit_time = DailyLimitTime.query.filter_by(team_id=team_id).first()
         if not daily_limit_time:
             return {"code": 404, "status": "Not Found"}, 404
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(daily_limit_time, key, value)
-
+        update_if_present(daily_limit_time, args)
         self.save_data(daily_limit_time)
         return {"message": "Tempo limite de daily do time editado com sucesso"}, 200   
     @is_logged_in

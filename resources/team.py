@@ -8,6 +8,7 @@ from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
 from utils.functions.get_logged_in_user import get_logged_in_user
+from utils.functions.update_if_present import update_if_present
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -51,11 +52,7 @@ class TeamId(ResourceModel):
     @blp.response(200)
     def patch(self, args, id):
         team = Team.query.get_or_404(id)
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(team, key, value)
-
+        update_if_present(team, args)
         self.save_data(team)
         return {"message": "Time editado com sucesso"}, 200
     

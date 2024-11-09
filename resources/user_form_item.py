@@ -6,6 +6,7 @@ from models.user_form_item import UserFormItem
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
+from utils.functions.update_if_present import update_if_present
 
 blp = Blueprint("UserFormItems", __name__, description="Operations on UserFormItems")
 
@@ -42,11 +43,7 @@ class UserFormItemId(ResourceModel):
     @blp.response(200)
     def patch(self, args, id):
         user_form_item = UserFormItem.query.get_or_404(id)
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(user_form_item, key, value)
-
+        update_if_present(user_form_item, args)
         self.save_data(user_form_item)
         return {"message": "Item de formulário do usuário editado com sucesso"}, 200   
     @is_logged_in

@@ -6,6 +6,7 @@ from models.form_item import FormItem
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
+from utils.functions.update_if_present import update_if_present
 
 blp = Blueprint("FormItems", __name__, description="Operations on FormItems")
 
@@ -42,11 +43,7 @@ class FormItemId(ResourceModel):
     @blp.response(200)
     def patch(self, args, id):
         form_item = FormItem.query.get_or_404(id)
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(form_item, key, value)
-
+        update_if_present(form_item, args)
         self.save_data(form_item)
         return {"message": "FormItem editado com sucesso"}, 200
     

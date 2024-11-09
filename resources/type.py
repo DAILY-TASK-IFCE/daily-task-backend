@@ -1,8 +1,7 @@
 from flask_smorest import Blueprint
 from resources.resource import ResourceModel
-from schemas.type import TypeResponseSchema, TypeQueryParamsSchema
+from schemas.type import TypeResponseSchema
 from models.type import Type
-from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 import os
 

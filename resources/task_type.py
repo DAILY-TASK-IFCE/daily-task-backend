@@ -6,6 +6,7 @@ from models.task_fields import TaskType
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
+from utils.functions.update_if_present import update_if_present
 
 blp = Blueprint("Task Types", __name__, description="Operations on Task Types")
 
@@ -42,11 +43,7 @@ class TaskTypeId(ResourceModel):
     @blp.response(200)
     def patch(self, args, id):
         task_type = TaskType.query.get_or_404(id)
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(task_type, key, value)
-
+        update_if_present(task_type, args)
         self.save_data(task_type)
         return {"message": "Tipo de Task editado com sucesso"}, 200
     

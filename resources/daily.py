@@ -8,8 +8,8 @@ from models.daily import Daily
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
-from utils.functions.nest_item import nest_item
-
+from utils.functions.update_if_present import update_if_present
+from utils.functions.add_nested_params import add_nested_params, add_nested_params_to_list
 blp = Blueprint("Dailies", __name__, description="Operations on Dailies")
 
 @blp.route("/daily")
@@ -19,14 +19,8 @@ class DailyList(ResourceModel):
     @blp.response(200, DailyResponseSchema(many=True))
     def get(self, args):
         query = filter_query(Daily, args)
-        dailys = query.order_by(Daily.id.desc()).all()
-        daily_dicts = []
-        for daily in dailys:
-            daily_dict = daily.__dict__.copy()
-            daily_dict["items"] = nest_item(daily)
-            daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
-            daily_dicts.append(daily_dict)
-        return daily_dicts
+        dailies = query.order_by(Daily.id.desc()).all()
+        return add_nested_params_to_list(dailies, ["items", "user_team"])
     
     @is_logged_in
     @handle_exceptions
@@ -47,9 +41,7 @@ class DailyId(ResourceModel):
     @blp.response(200, DailyResponseSchema)
     def get(self, id):
         daily = Daily.query.get_or_404(id)
-        daily_dict = daily.__dict__.copy()
-        daily_dict["items"] = nest_item(daily)
-        daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
+        daily_dict = add_nested_params(daily, ["items", "user_team"])
         return daily_dict, 200
     
     @is_logged_in
@@ -58,11 +50,7 @@ class DailyId(ResourceModel):
     @blp.response(200)
     def patch(self, args, id):
         daily = Daily.query.get_or_404(id)
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(daily, key, value)
-
+        update_if_present(daily, args)
         self.save_data(daily)
         return {"message": "Daily editada com sucesso"}, 200
     
@@ -81,16 +69,8 @@ class DailyWeekId(ResourceModel):
         today = datetime.today()
         start_of_week = today - timedelta(days=today.weekday(), weeks=weeknum)
         end_of_week = start_of_week + timedelta(days=5)
-
         dailies = Daily.query.filter(Daily.date >= start_of_week, Daily.date <= end_of_week).all()
-        daily_dicts = []
-        for daily in dailies:
-            daily_dict = daily.__dict__.copy()
-            daily_dict["items"] = nest_item(daily)
-            daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
-            daily_dicts.append(daily_dict)
-        
-        return daily_dicts
+        return add_nested_params_to_list(dailies, ["items", "user_team"])
 
 @blp.route("/daily/month/<int:monthnum>")
 class DailyMonthId(ResourceModel):
@@ -110,12 +90,5 @@ class DailyMonthId(ResourceModel):
             if current_date.weekday() < 5:
                 month_days.append(current_date)
         dailies = Daily.query.filter(Daily.date.in_(month_days)).all()
-        daily_dicts = []
-        for daily in dailies:
-            daily_dict = daily.__dict__.copy()
-            daily_dict["items"] = nest_item(daily)
-            daily_dict["user_team"] = Daily.query.get(daily.user_team_id)
-            daily_dicts.append(daily_dict)
-        
-        return daily_dicts
+        return add_nested_params_to_list(dailies, ["items", "user_team"])
 

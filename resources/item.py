@@ -6,6 +6,7 @@ from models.item import Item
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
+from utils.functions.update_if_present import update_if_present
 
 blp = Blueprint("Items", __name__, description="Operations on Items")
 
@@ -42,11 +43,7 @@ class ItemId(ResourceModel):
     @blp.response(200)
     def patch(self, args, id):
         item = Item.query.get_or_404(id)
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(item, key, value)
-
+        update_if_present(item, args)
         self.save_data(item)
         return {"message": "Item editado com sucesso"}, 200
     

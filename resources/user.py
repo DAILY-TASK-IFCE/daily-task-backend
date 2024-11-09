@@ -6,8 +6,8 @@ from models.user import User
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
-from utils.functions.nest_team import nest_team
-
+from utils.functions.update_if_present import update_if_present
+from utils.functions.add_nested_params import add_nested_params, add_nested_params_to_list
 blp = Blueprint("Users", __name__, description="Operations on Users")
 
 @blp.route("/user")
@@ -18,12 +18,7 @@ class UserList(ResourceModel):
     def get(self, args):
         query = filter_query(User, args)
         users = query.order_by(User.id.desc()).all()
-        user_dicts = []
-        for user in users:
-            user_dict = user.__dict__.copy()
-            user_dict["teams"] = nest_team(user)
-            user_dicts.append(user_dict)
-        return user_dicts
+        return add_nested_params_to_list(users, ["teams"])
     
     @is_logged_in
     @handle_exceptions
@@ -43,8 +38,7 @@ class UserId(ResourceModel):
     @blp.response(200, UserResponseSchema)
     def get(self, id):
         user = User.query.get_or_404(id)
-        user_dict = user.__dict__.copy()
-        user_dict["teams"] = nest_team(user)
+        user_dict = add_nested_params(user, ["teams"])
         return user_dict, 200
     
     @is_logged_in
@@ -53,11 +47,7 @@ class UserId(ResourceModel):
     @blp.response(200)
     def patch(self, args, id):
         user = User.query.get_or_404(id)
-
-        for key, value in args.items():
-            if value is not None:
-                setattr(user, key, value)
-
+        update_if_present(user, args)
         self.save_data(user)
         return {"message": "Usuário editado com sucesso"}, 200
     
