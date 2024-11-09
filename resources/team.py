@@ -3,7 +3,7 @@ from flask_smorest import Blueprint
 from resources.resource import ResourceModel
 from schemas.team import TeamQueryParamsSchema, TeamResponseSchema, TeamParamsSchema
 from models.team import Team
-from models.user_team import UserTeam
+from models.team_user import TeamUser
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
 from utils.functions.filter_query import filter_query
@@ -34,8 +34,8 @@ class TeamList(ResourceModel):
         user = get_logged_in_user()
         new_team = Team(**new_team_data)
         self.save_data(new_team)
-        user_team = UserTeam(user_id=user.id, team_id=new_team.id, type_id=os.getenv("TEAM_CREATOR_ID"))
-        self.save_data(user_team)
+        team_user = TeamUser(user_id=user.id, team_id=new_team.id, type_id=os.getenv("TEAM_CREATOR_ID"))
+        self.save_data(team_user)
         return {"message": "Time criado com sucesso."}, 201
 
 @blp.route("/team/<int:id>")

@@ -18,7 +18,7 @@ class TaskList(ResourceModel):
     def get(self, args):
         query = filter_query(Task, args)
         tasks = query.all()
-        return add_nested_params_to_list(tasks, ["groups", "user_teams"])
+        return add_nested_params_to_list(tasks, ["groups", "team_users"])
     
     @is_logged_in
     @handle_exceptions
@@ -35,7 +35,7 @@ class TaskId(ResourceModel):
     @blp.response(200, TaskResponseSchema)
     def get(self, id):
         task = Task.query.get_or_404(id)
-        task_dict = add_nested_params(task, ["groups", "user_teams"])
+        task_dict = add_nested_params(task, ["groups", "team_users"])
         return task_dict, 200
     
     @is_logged_in

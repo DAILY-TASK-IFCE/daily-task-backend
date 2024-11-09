@@ -1,6 +1,6 @@
 from flask_smorest import Blueprint
 
-from models.user_team import UserTeam
+from models.team_user import TeamUser
 from resources.resource import ResourceModel
 from schemas.invite import InviteQueryParamsSchema, InviteResponseSchema, InviteParamsSchema
 from models.invite import Invite
@@ -49,8 +49,8 @@ class AcceptInviteId(ResourceModel):
     @handle_exceptions
     def delete(self, id):
         invite = Invite.query.get_or_404(id)
-        new_user_team = UserTeam(user_id=invite.user_id, team_id=invite.team_id, type_id=os.getenv("TEAM_REGULAR_ID"))
-        self.save_data(new_user_team)
+        new_team_user = TeamUser(user_id=invite.user_id, team_id=invite.team_id, type_id=os.getenv("TEAM_REGULAR_ID"))
+        self.save_data(new_team_user)
         self.delete_data(invite)
         return {"message": "Convite aceito e usuário adicionado ao time."}, 200
 

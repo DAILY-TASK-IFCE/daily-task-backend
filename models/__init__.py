@@ -9,7 +9,7 @@ from .group import Group
 from .daily import Daily
 from .form_item import FormItem
 from .user_task import UserTask
-from .user_team import UserTeam
+from .team_user import TeamUser
 from .task_group import TaskGroup
 from .user_group import UserGroup
 from .task_fields import *

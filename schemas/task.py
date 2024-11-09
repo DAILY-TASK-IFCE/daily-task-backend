@@ -10,7 +10,7 @@ class PlainTaskResponseSchema(Schema):
     difficulty_id = fields.Int()
     task_type_id = fields.Int()
 class TaskResponseSchema(PlainTaskResponseSchema):
-    user_teams = fields.List(fields.Nested('PlainUserTeamResponseSchema'))
+    team_users = fields.List(fields.Nested('PlainTeamUserResponseSchema'))
     groups = fields.List(fields.Nested('PlainGroupResponseSchema'))
 
 class TaskParamsSchema(Schema):

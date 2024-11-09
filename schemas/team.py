@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, validate
 from schemas.daily_limit_time import DailyLimitTimeResponseSchema
 from utils.validations.messages.schemas import INVALID_SIZE, REQUIRED_FIELD
-from schemas.user_team import PlainUserTeamResponseSchema
+from schemas.team_user import PlainTeamUserResponseSchema
 from schemas.invite import InviteResponseSchema
 from schemas.form_item import PlainFormItemResponseSchema
 class PlainTeamResponseSchema(Schema):
@@ -9,7 +9,7 @@ class PlainTeamResponseSchema(Schema):
     name = fields.Str()
 
 class TeamResponseSchema(PlainTeamResponseSchema):
-    users = fields.List(fields.Nested(PlainUserTeamResponseSchema))
+    users = fields.List(fields.Nested(PlainTeamUserResponseSchema))
     invites = fields.List(fields.Nested(InviteResponseSchema))
     form_items = fields.List(fields.Nested(PlainFormItemResponseSchema))
     daily_limit_time = fields.Nested(DailyLimitTimeResponseSchema)

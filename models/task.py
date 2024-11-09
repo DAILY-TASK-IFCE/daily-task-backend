@@ -9,6 +9,6 @@ class Task(db.Model):
     priority_id = db.Column(db.Integer, db.ForeignKey('priorities.id'), nullable=False)
     difficulty_id = db.Column(db.Integer, db.ForeignKey('difficulties.id'), nullable=False)
     task_type_id = db.Column(db.Integer, db.ForeignKey('task_types.id'), nullable=False)
-    user_teams = db.relationship('UserTask', backref='task', lazy=True)
+    team_users = db.relationship('UserTask', backref='task', lazy=True)
     groups = db.relationship('TaskGroup', backref='task', lazy=True)
    

@@ -4,7 +4,7 @@ from utils.validations.messages.schemas import INVALID_SIZE, REQUIRED_FIELD
 class TypeResponseSchema(Schema):
     id = fields.Int()
     name = fields.Str()
-    user_teams = fields.List(fields.Nested('PlainUserTeamResponseSchema'))
+    team_users = fields.List(fields.Nested('PlainTeamUserResponseSchema'))
 
 
 class TypeParamsSchema(Schema): 

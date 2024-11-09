@@ -6,5 +6,5 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     photo = db.Column(db.String(255), nullable=True)
     name = db.Column(db.String(100), nullable=False)
-    teams = db.relationship('UserTeam', backref='user', lazy=True)
+    teams = db.relationship('TeamUser', backref='user', lazy=True)
 

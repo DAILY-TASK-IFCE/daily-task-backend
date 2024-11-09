@@ -3,7 +3,7 @@ from flask_smorest import Blueprint
 from resources.resource import ResourceModel
 from schemas.daily import DailyQueryParamsSchema, DailyResponseSchema, DailyParamsSchema
 from models.daily import Daily
-from models.user_team import UserTeam
+from models.team_user import TeamUser
 from datetime import datetime
 from utils.decorators.handle_exceptions import handle_exceptions
 from utils.decorators.is_logged_in import is_logged_in
@@ -24,11 +24,11 @@ class DailyList(ResourceModel):
         team_id = args.get("team_id")
         query = filter_query(Daily, args)
         if team_id:
-            query = query.join(UserTeam).filter(UserTeam.team_id == team_id, Daily.user_team_id == UserTeam.id)
+            query = query.join(TeamUser).filter(TeamUser.team_id == team_id, Daily.team_user_id == TeamUser.id)
         query = apply_date_filter(query, filter_by, args)
         query = query.order_by(Daily.id.asc() if order_by == "asc" else Daily.id.desc())
         dailies = query.all()
-        return add_nested_params_to_list(dailies, ["items", "user_team"])
+        return add_nested_params_to_list(dailies, ["items", "team_user"])
     
     @is_logged_in
     @handle_exceptions
@@ -36,7 +36,7 @@ class DailyList(ResourceModel):
     @blp.response(201)
     def post(self, new_daily_data):
         new_daily_data["date"] = datetime.today()
-        if Daily.query.filter_by(date=new_daily_data["date"], user_team_id=new_daily_data["user_team_id"]).first():
+        if Daily.query.filter_by(date=new_daily_data["date"], team_user_id=new_daily_data["team_user_id"]).first():
             return {"message": "Esse usuário já fez uma daily hoje"}, 409
         
         new_daily = Daily(**new_daily_data)
@@ -49,7 +49,7 @@ class DailyId(ResourceModel):
     @blp.response(200, DailyResponseSchema)
     def get(self, id):
         daily = Daily.query.get_or_404(id)
-        daily_dict = add_nested_params(daily, ["items", "user_team"])
+        daily_dict = add_nested_params(daily, ["items", "team_user"])
         return daily_dict, 200
     
     @is_logged_in

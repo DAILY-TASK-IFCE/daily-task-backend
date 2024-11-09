@@ -2,7 +2,7 @@ from utils.functions.nest_item import nest_items
 from utils.functions.nest_task import nest_tasks
 from utils.functions.nest_group import nest_groups
 from utils.functions.nest_team import nest_teams
-from utils.functions.nest_user_team import nest_user_team, nest_user_teams
+from utils.functions.nest_team_user import nest_team_user, nest_team_users
 from utils.functions.nest_user_form_item import nest_user_form_items
 def add_nested_params_to_list(objs, params):
     return [add_nested_params(obj, params) for obj in objs]
@@ -13,8 +13,8 @@ def add_nested_params(obj, params):
         "items": nest_items,
         "groups": nest_groups,
         "teams": nest_teams,
-        "user_teams": nest_user_teams,
-        "user_team": nest_user_team,
+        "team_users": nest_team_users,
+        "team_user": nest_team_user,
         "user_form_items": nest_user_form_items
     }
     obj_dict = obj.__dict__.copy()

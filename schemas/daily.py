@@ -3,7 +3,7 @@ from datetime import date
 from utils.validations.messages.schemas import INVALID_ID, INVALID_DATE
 class DailyResponseSchema(Schema):
     id = fields.Int()
-    user_team = fields.Nested('PlainUserTeamResponseSchema')
+    team_user = fields.Nested('PlainTeamUserResponseSchema')
     date = fields.Date()
     items = fields.List(fields.Nested('ItemResponseSchema'))
 
@@ -12,10 +12,10 @@ def validate_date(value):
         raise ValidationError("A data não pode ser anterior ao dia de hoje.")
 
 class DailyParamsSchema(Schema):
-    user_team_id = fields.Int(required=True, validate=validate.Range(min=1, error=INVALID_ID.format("'User Team'")))
+    team_user_id = fields.Int(required=True, validate=validate.Range(min=1, error=INVALID_ID.format("'User Team'")))
 
 class DailyQueryParamsSchema(Schema):
-    user_team_id = fields.Int()
+    team_user_id = fields.Int()
     date = fields.Date()
     filter_by = fields.String()
     order_by = fields.String()
