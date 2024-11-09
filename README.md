@@ -29,6 +29,7 @@ pip install -r requirements.txt
 flask db upgrade
 # Talvez o nome de usuário, host e nome do banco de dados varie, verifique antes o que está definido no seu .env
 psql -U postgres -h localhost -d daily_db -f init_database.sql
+pre-commit install
 ```
 #### Rodando aplicação
 Para rodar a aplicação é necessário estár no diretório raíz do projeto e executar o seguinte comando:
