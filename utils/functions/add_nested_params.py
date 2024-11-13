@@ -22,6 +22,6 @@ def add_nested_params(obj, params):
     }
     obj_dict = obj.__dict__.copy()
     for attr in params:
-        if (attr in nest_funcs) and (attr in obj_dict):
+        if (attr in nest_funcs):
             obj_dict[attr] = nest_funcs[attr](obj)
     return obj_dict
